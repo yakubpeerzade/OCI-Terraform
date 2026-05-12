@@ -268,7 +268,7 @@ module "spoke_drg_attachment" {
 # HUb Route Table
 #############################
 module "hub_route_table" {
-  source = "../../modules/route_table"
+  source = "../../modules/route-table"
 
   compartment_id = var.compartment_id
   vcn_id         = module.hub_vcn.vcn_id
@@ -288,7 +288,7 @@ module "hub_route_table" {
 # DMZ Route Table
 #############################
 module "dmz_route_table" {
-  source = "../../modules/route_table"
+  source = "../../modules/route-table"
 
   compartment_id = var.compartment_id
   vcn_id         = module.dmz_vcn.vcn_id
@@ -307,7 +307,7 @@ module "dmz_route_table" {
 # Spoke Route Table
 #############################
 module "spoke_route_table" {
-  source = "../../modules/route_table"
+  source = "../../modules/route-table"
 
   compartment_id = var.compartment_id
   vcn_id         = module.spoke_vcn.vcn_id
