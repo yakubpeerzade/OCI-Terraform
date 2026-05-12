@@ -234,7 +234,7 @@ module "hub_service_gateway" {
 #############################
 
 module "hub_drg_attachment" {
-  source = "../../modules/drg_attachment"
+  source = "../../modules/drg-attachment"
 
   drg_id       = module.dev_drg.drg_id
   vcn_id       = module.hub_vcn.vcn_id
@@ -245,7 +245,7 @@ module "hub_drg_attachment" {
 # DMZ-DRG Attachment
 #############################
 module "dmz_drg_attachment" {
-  source = "../../modules/drg_attachment"
+  source = "../../modules/drg-attachment"
 
   drg_id       = module.dev_drg.drg_id
   vcn_id       = module.dmz_vcn.vcn_id
@@ -256,7 +256,7 @@ module "dmz_drg_attachment" {
 # Spoke-DRG Attachment
 #############################
 module "spoke_drg_attachment" {
-  source = "../../modules/drg_attachment"
+  source = "../../modules/drg-attachment"
 
   drg_id       = module.dev_drg.drg_id
   vcn_id       = module.spoke_vcn.vcn_id
