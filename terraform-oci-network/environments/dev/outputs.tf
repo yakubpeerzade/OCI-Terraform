@@ -41,3 +41,15 @@ output "spoke_app_subnet_id" {
 output "spoke_db_subnet_id" {
   value = module.spoke_db_subnet.subnet_id
 }
+
+output "dmz_igw_id" {
+  value = module.dmz_igw.gateway_id
+}
+
+output "hub_nat_gateway_id" {
+  value = module.hub_nat_gateway.gateway_id
+}
+
+output "hub_service_gateway_id" {
+  value = module.hub_service_gateway.gateway_id
+}
