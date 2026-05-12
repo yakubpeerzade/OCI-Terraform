@@ -34,3 +34,7 @@ variable "oracle_linux_image_id" {
 variable "ssh_public_key" {
   type = string
 }
+
+variable "image_id" {
+  type = string
+}
