@@ -64,3 +64,15 @@ output "dmz_drg_attachment_id" {
 output "spoke_drg_attachment_id" {
   value = module.spoke_drg_attachment.drg_attachment_id
 }
+
+output "hub_route_table_id" {
+  value = module.hub_route_table.route_table_id
+}
+
+output "dmz_route_table_id" {
+  value = module.dmz_route_table.route_table_id
+}
+
+output "spoke_route_table_id" {
+  value = module.spoke_route_table.route_table_id
+}

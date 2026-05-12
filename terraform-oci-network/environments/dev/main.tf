@@ -262,3 +262,62 @@ module "spoke_drg_attachment" {
   vcn_id       = module.spoke_vcn.vcn_id
   display_name = "spoke-drg-attachment"
 }
+
+
+#############################
+# HUb Route Table
+#############################
+module "hub_route_table" {
+  source = "../../modules/route_table"
+
+  compartment_id = var.compartment_id
+  vcn_id         = module.hub_vcn.vcn_id
+  display_name   = "hub-route-table"
+
+  route_rules = [
+    {
+      destination       = "0.0.0.0/0"
+      destination_type  = "CIDR_BLOCK"
+      network_entity_id = module.hub_nat_gateway.nat_gateway_id
+    }
+  ]
+}
+
+
+#############################
+# DMZ Route Table
+#############################
+module "dmz_route_table" {
+  source = "../../modules/route_table"
+
+  compartment_id = var.compartment_id
+  vcn_id         = module.dmz_vcn.vcn_id
+  display_name   = "dmz-route-table"
+
+  route_rules = [
+    {
+      destination       = "0.0.0.0/0"
+      destination_type  = "CIDR_BLOCK"
+      network_entity_id = module.dmz_igw.igw_id
+    }
+  ]
+}
+
+#############################
+# Spoke Route Table
+#############################
+module "spoke_route_table" {
+  source = "../../modules/route_table"
+
+  compartment_id = var.compartment_id
+  vcn_id         = module.spoke_vcn.vcn_id
+  display_name   = "spoke-route-table"
+
+  route_rules = [
+    {
+      destination       = "0.0.0.0/0"
+      destination_type  = "CIDR_BLOCK"
+      network_entity_id = module.spoke_drg_attachment.drg_attachment_id
+    }
+  ]
+}
