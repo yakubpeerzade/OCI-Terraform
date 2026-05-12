@@ -61,50 +61,45 @@ module "hub_management_subnet" {
   source = "../../modules/subnet"
 
   compartment_id = var.compartment_id
-
-  vcn_id = module.hub_vcn.vcn_id
+  vcn_id         = module.hub_vcn.vcn_id
 
   subnet_name = "hub-management-subnet"
-
-  cidr_block = "172.28.96.16/28"
-
-  dns_label = "hubmgmt"
+  cidr_block  = "172.28.96.16/28"
+  dns_label   = "hubmgmt"
 
   is_private = true
-}
 
+  route_table_id = module.hub_route_table.route_table_id
+}
 
 module "hub_firewall_subnet" {
   source = "../../modules/subnet"
 
   compartment_id = var.compartment_id
-
-  vcn_id = module.hub_vcn.vcn_id
+  vcn_id         = module.hub_vcn.vcn_id
 
   subnet_name = "hub-firewall-subnet"
-
-  cidr_block = "172.28.96.0/28"
-
-  dns_label = "hubfw"
+  cidr_block  = "172.28.96.0/28"
+  dns_label   = "hubfw"
 
   is_private = true
-}
 
+  route_table_id = module.hub_route_table.route_table_id
+}
 
 module "hub_shared_services_subnet" {
   source = "../../modules/subnet"
 
   compartment_id = var.compartment_id
-
-  vcn_id = module.hub_vcn.vcn_id
+  vcn_id         = module.hub_vcn.vcn_id
 
   subnet_name = "hub-shared-services-subnet"
-
-  cidr_block = "172.28.96.32/27"
-
-  dns_label = "hubshared"
+  cidr_block  = "172.28.96.32/27"
+  dns_label   = "hubshared"
 
   is_private = true
+
+  route_table_id = module.hub_route_table.route_table_id
 }
 
 #############################
@@ -115,32 +110,30 @@ module "dmz_public_lb_subnet" {
   source = "../../modules/subnet"
 
   compartment_id = var.compartment_id
-
-  vcn_id = module.dmz_vcn.vcn_id
+  vcn_id         = module.dmz_vcn.vcn_id
 
   subnet_name = "dmz-public-lb-subnet"
-
-  cidr_block = "172.28.99.0/28"
-
-  dns_label = "dmzpub"
+  cidr_block  = "172.28.99.0/28"
+  dns_label   = "dmzpub"
 
   is_private = false
+
+  route_table_id = module.dmz_route_table.route_table_id
 }
 
 module "dmz_web_subnet" {
   source = "../../modules/subnet"
 
   compartment_id = var.compartment_id
-
-  vcn_id = module.dmz_vcn.vcn_id
+  vcn_id         = module.dmz_vcn.vcn_id
 
   subnet_name = "dmz-web-subnet"
-
-  cidr_block = "172.28.99.16/28"
-
-  dns_label = "dmzweb"
+  cidr_block  = "172.28.99.16/28"
+  dns_label   = "dmzweb"
 
   is_private = true
+
+  route_table_id = module.dmz_route_table.route_table_id
 }
 
 #############################
@@ -151,32 +144,30 @@ module "spoke_app_subnet" {
   source = "../../modules/subnet"
 
   compartment_id = var.compartment_id
-
-  vcn_id = module.spoke_vcn.vcn_id
+  vcn_id         = module.spoke_vcn.vcn_id
 
   subnet_name = "spoke-app-subnet"
-
-  cidr_block = "172.28.98.0/28"
-
-  dns_label = "spkapp"
+  cidr_block  = "172.28.98.0/28"
+  dns_label   = "spkapp"
 
   is_private = true
+
+  route_table_id = module.spoke_route_table.route_table_id
 }
 
 module "spoke_db_subnet" {
   source = "../../modules/subnet"
 
   compartment_id = var.compartment_id
-
-  vcn_id = module.spoke_vcn.vcn_id
+  vcn_id         = module.spoke_vcn.vcn_id
 
   subnet_name = "spoke-db-subnet"
-
-  cidr_block = "172.28.98.16/28"
-
-  dns_label = "spkdb"
+  cidr_block  = "172.28.98.16/28"
+  dns_label   = "spkdb"
 
   is_private = true
+
+  route_table_id = module.spoke_route_table.route_table_id
 }
 
 
@@ -278,7 +269,7 @@ module "hub_route_table" {
     {
       destination       = "0.0.0.0/0"
       destination_type  = "CIDR_BLOCK"
-      network_entity_id = module.hub_nat_gateway.nat_gateway_id
+      network_entity_id = module.hub_nat_gateway.gateway_id
     }
   ]
 }
@@ -298,7 +289,7 @@ module "dmz_route_table" {
     {
       destination       = "0.0.0.0/0"
       destination_type  = "CIDR_BLOCK"
-      network_entity_id = module.dmz_igw.igw_id
+      network_entity_id = module.dmz_igw.gateway_id
     }
   ]
 }

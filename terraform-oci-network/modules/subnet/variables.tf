@@ -20,7 +20,6 @@ variable "dns_label" {
 
 variable "route_table_id" {
   type = string
-  default = null
 }
 
 variable "security_list_ids" {
