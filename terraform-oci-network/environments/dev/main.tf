@@ -178,3 +178,54 @@ module "spoke_db_subnet" {
 
   is_private = true
 }
+
+
+#############################
+# INTERNET GATEWAY
+#############################
+
+module "dmz_igw" {
+  source = "../../modules/gateway"
+
+  compartment_id = var.compartment_id
+
+  vcn_id = module.dmz_vcn.vcn_id
+
+  gateway_name = "dmz-dev-igw"
+
+  gateway_type = "igw"
+}
+
+#############################
+# NAT GATEWAY
+#############################
+
+module "hub_nat_gateway" {
+  source = "../../modules/gateway"
+
+  compartment_id = var.compartment_id
+
+  vcn_id = module.hub_vcn.vcn_id
+
+  gateway_name = "hub-dev-nat"
+
+  gateway_type = "nat"
+}
+
+
+#############################
+# SERVICE GATEWAY
+#############################
+
+module "hub_service_gateway" {
+  source = "../../modules/gateway"
+
+  compartment_id = var.compartment_id
+
+  vcn_id = module.hub_vcn.vcn_id
+
+  gateway_name = "hub-dev-sgw"
+
+  gateway_type = "sgw"
+}
+
