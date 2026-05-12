@@ -51,25 +51,11 @@ module "spoke_vcn" {
   dns_label   = "spokedev"
 }
 
+
+
 #############################
 # HUB VCN SUBNETS
 #############################
-
-module "hub_firewall_subnet" {
-  source = "../../modules/subnet"
-
-  compartment_id = var.compartment_id
-
-  vcn_id = module.hub_vcn.vcn_id
-
-  subnet_name = "hub-firewall-subnet"
-
-  cidr_block = "172.28.96.0/28"
-
-  dns_label = "hubfw"
-
-  is_private = true
-}
 
 module "hub_management_subnet" {
   source = "../../modules/subnet"
@@ -87,25 +73,6 @@ module "hub_management_subnet" {
   is_private = true
 }
 
-module "hub_shared_services_subnet" {
-  source = "../../modules/subnet"
-
-  compartment_id = var.compartment_id
-
-  vcn_id = module.hub_vcn.vcn_id
-
-  subnet_name = "hub-shared-services-subnet"
-
-  cidr_block = "172.28.96.32/27"
-
-  dns_label = "hubshared"
-
-  is_private = true
-}
-
-#############################
-# HUB VCN SUBNETS
-#############################
 
 module "hub_firewall_subnet" {
   source = "../../modules/subnet"
@@ -123,21 +90,6 @@ module "hub_firewall_subnet" {
   is_private = true
 }
 
-module "hub_management_subnet" {
-  source = "../../modules/subnet"
-
-  compartment_id = var.compartment_id
-
-  vcn_id = module.hub_vcn.vcn_id
-
-  subnet_name = "hub-management-subnet"
-
-  cidr_block = "172.28.96.16/28"
-
-  dns_label = "hubmgmt"
-
-  is_private = true
-}
 
 module "hub_shared_services_subnet" {
   source = "../../modules/subnet"
