@@ -89,6 +89,6 @@ output "db_nsg_id" {
   value = module.db_nsg.nsg_id
 }
 
-output "spoke_test_vm_id" {
-  value = module.spoke_test_vm.instance_id
+output "oci_core_instance" {
+  value = module.oci_core_instance.instance_id
 }
