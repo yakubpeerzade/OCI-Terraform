@@ -229,3 +229,36 @@ module "hub_service_gateway" {
   gateway_type = "sgw"
 }
 
+#############################
+# Hub-DRG Attachment
+#############################
+
+module "hub_drg_attachment" {
+  source = "../../modules/drg_attachment"
+
+  drg_id       = module.dev_drg.drg_id
+  vcn_id       = module.hub_vcn.vcn_id
+  display_name = "hub-drg-attachment"
+}
+
+#############################
+# DMZ-DRG Attachment
+#############################
+module "dmz_drg_attachment" {
+  source = "../../modules/drg_attachment"
+
+  drg_id       = module.dev_drg.drg_id
+  vcn_id       = module.dmz_vcn.vcn_id
+  display_name = "dmz-drg-attachment"
+}
+
+#############################
+# Spoke-DRG Attachment
+#############################
+module "spoke_drg_attachment" {
+  source = "../../modules/drg_attachment"
+
+  drg_id       = module.dev_drg.drg_id
+  vcn_id       = module.spoke_vcn.vcn_id
+  display_name = "spoke-drg-attachment"
+}

@@ -53,3 +53,14 @@ output "hub_nat_gateway_id" {
 output "hub_service_gateway_id" {
   value = module.hub_service_gateway.gateway_id
 }
+output "hub_drg_attachment_id" {
+  value = module.hub_drg_attachment.drg_attachment_id
+}
+
+output "dmz_drg_attachment_id" {
+  value = module.dmz_drg_attachment.drg_attachment_id
+}
+
+output "spoke_drg_attachment_id" {
+  value = module.spoke_drg_attachment.drg_attachment_id
+}
