@@ -264,7 +264,7 @@ module "hub_route_table" {
   compartment_id = var.compartment_id
   vcn_id         = module.hub_vcn.vcn_id
 
-  route_table_name = "hub-route-table"
+  display_name = "hub-route-table"
 
   route_rules = [
     {
@@ -285,7 +285,7 @@ module "dmz_route_table" {
   compartment_id = var.compartment_id
   vcn_id         = module.dmz_vcn.vcn_id
 
-  route_table_name = "dmz-route-table"
+  display_name = "dmz-route-table"
 
   route_rules = [
     {
@@ -305,7 +305,7 @@ module "spoke_route_table" {
   compartment_id = var.compartment_id
   vcn_id         = module.spoke_vcn.vcn_id
 
-  route_table_name = "spoke-route-table"
+  display_name = "spoke-route-table"
 
   route_rules = [
     {
