@@ -27,7 +27,7 @@ variable "nsg_ids" {
   type = list(string)
 }
 
-variable "image_id" {
+variable "oracle_linux_image_id" {
   type = string
 }
 
