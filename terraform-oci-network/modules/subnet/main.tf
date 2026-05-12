@@ -1,3 +1,6 @@
+data "oci_core_vcn" "vcn" {
+  vcn_id = var.vcn_id
+}
 resource "oci_core_subnet" "this" {
   compartment_id = var.compartment_id
 
@@ -13,5 +16,5 @@ resource "oci_core_subnet" "this" {
 
   route_table_id = var.route_table_id
 
-  security_list_ids = var.security_list_ids
+  security_list_ids = length(var.security_list_ids) > 0 ? var.security_list_ids : [data.oci_core_vcn.vcn.default_security_list_id]
 }
