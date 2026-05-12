@@ -340,3 +340,106 @@ module "dmz_drg_route_table" {
   drg_id       = module.dev_drg.drg_id
   display_name = "dmz-drg-route-table"
 }
+
+#############################
+# DRG Hub Routes
+#############################
+
+
+module "hub_drg_rt_assoc" {
+  source = "../../modules/drg-route-table-association"
+
+  drg_attachment_id  = module.hub_drg_attachment.drg_attachment_id
+  drg_route_table_id = module.hub_drg_route_table.drg_route_table_id
+}
+
+module "spoke_drg_rt_assoc" {
+  source = "../../modules/drg-route-table-association"
+
+  drg_attachment_id  = module.spoke_drg_attachment.drg_attachment_id
+  drg_route_table_id = module.spoke_drg_route_table.drg_route_table_id
+}
+
+module "dmz_drg_rt_assoc" {
+  source = "../../modules/drg-route-table-association"
+
+  drg_attachment_id  = module.dmz_drg_attachment.drg_attachment_id
+  drg_route_table_id = module.dmz_drg_route_table.drg_route_table_id
+}
+
+#############################
+# DRG Spoke Routes
+#############################
+module "spoke_to_hub_route" {
+  source = "../../modules/drg-route-rule"
+
+  drg_route_table_id         = module.spoke_drg_route_table.drg_route_table_id
+  destination                = "172.28.96.0/24"
+  next_hop_drg_attachment_id = module.hub_drg_attachment.drg_attachment_id
+}
+#############################
+# DRG DMZ Routes
+#############################
+
+module "dmz_to_hub_route" {
+  source = "../../modules/drg-route-rule"
+
+  drg_route_table_id         = module.dmz_drg_route_table.drg_route_table_id
+  destination                = "172.28.96.0/24"
+  next_hop_drg_attachment_id = module.hub_drg_attachment.drg_attachment_id
+}
+
+##############################
+# NSG
+##############################
+module "web_nsg" {
+  source = "../../modules/nsg"
+
+  compartment_id = var.compartment_id
+  vcn_id         = module.dmz_vcn.vcn_id
+  display_name   = "web-nsg"
+}
+
+module "app_nsg" {
+  source = "../../modules/nsg"
+
+  compartment_id = var.compartment_id
+  vcn_id         = module.spoke_vcn.vcn_id
+  display_name   = "app-nsg"
+}
+
+module "db_nsg" {
+  source = "../../modules/nsg"
+
+  compartment_id = var.compartment_id
+  vcn_id         = module.spoke_vcn.vcn_id
+  display_name   = "db-nsg"
+}
+
+
+
+#################################
+# Spoke Test VM
+#################################
+module "spoke_test_vm" {
+  source = "../../modules/compute"
+
+  availability_domain = var.availability_domain
+  compartment_id      = var.compartment_id
+
+  display_name = "spoke-test-vm"
+
+  shape = "VM.Standard.E2.1.Micro"
+
+  subnet_id = module.spoke_app_subnet.subnet_id
+
+  assign_public_ip = false
+
+  image_id = var.image_id
+
+  ssh_public_key = file("~/.ssh/id_rsa.pub")
+
+  nsg_ids = [
+    module.app_nsg.nsg_id
+  ]
+}

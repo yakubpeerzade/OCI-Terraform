@@ -5,3 +5,5 @@ variable "compartment_id" {
 variable "region" {
   type = string
 }
+variable "availability_domain" {}
+variable "image_id" {}

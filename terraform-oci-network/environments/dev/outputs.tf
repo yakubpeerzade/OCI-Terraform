@@ -76,3 +76,11 @@ output "dmz_route_table_id" {
 output "spoke_route_table_id" {
   value = module.spoke_route_table.route_table_id
 }
+
+output "nsg_id" {
+  value = oci_core_network_security_group.this.id
+}
+
+output "instance_id" {
+  value = oci_core_instance.this.id
+}

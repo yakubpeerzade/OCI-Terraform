@@ -1,0 +1,9 @@
+variable "availability_domain" {}
+variable "compartment_id" {}
+variable "display_name" {}
+variable "shape" {}
+variable "subnet_id" {}
+variable "assign_public_ip" {}
+variable "image_id" {}
+variable "ssh_public_key" {}
+variable "nsg_ids" {}
