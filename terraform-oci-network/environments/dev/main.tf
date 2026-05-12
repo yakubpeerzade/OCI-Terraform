@@ -315,3 +315,28 @@ module "spoke_route_table" {
     }
   ]
 }
+
+#############################
+# DRG Route Table
+#############################
+
+module "hub_drg_route_table" {
+  source = "../../modules/drg-route-table"
+
+  drg_id       = module.dev_drg.drg_id
+  display_name = "hub-drg-route-table"
+}
+
+module "spoke_drg_route_table" {
+  source = "../../modules/drg-route-table"
+
+  drg_id       = module.dev_drg.drg_id
+  display_name = "spoke-drg-route-table"
+}
+
+module "dmz_drg_route_table" {
+  source = "../../modules/drg-route-table"
+
+  drg_id       = module.dev_drg.drg_id
+  display_name = "dmz-drg-route-table"
+}
