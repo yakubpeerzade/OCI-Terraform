@@ -437,7 +437,7 @@ module "spoke_test_vm" {
 
   image_id = var.image_id
 
-  ssh_public_key = file("~/.ssh/id_rsa.pub")
+  ssh_public_key = file("${path.module}/id_rsa.pub")
 
   nsg_ids = [
     module.app_nsg.nsg_id
