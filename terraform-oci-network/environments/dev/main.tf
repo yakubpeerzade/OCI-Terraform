@@ -370,24 +370,24 @@ module "dmz_drg_rt_assoc" {
 #############################
 # DRG Spoke Routes
 #############################
-module "spoke_to_hub_route" {
-  source = "../../modules/drg-route-rule"
+# module "spoke_to_hub_route" {
+#   source = "../../modules/drg-route-rule"
 
-  drg_route_table_id         = module.spoke_drg_route_table.drg_route_table_id
-  destination                = "172.28.96.0/24"
-  next_hop_drg_attachment_id = module.hub_drg_attachment.drg_attachment_id
-}
+#   drg_route_table_id         = module.spoke_drg_route_table.drg_route_table_id
+#   destination                = "172.28.96.0/24"
+#   next_hop_drg_attachment_id = module.hub_drg_attachment.drg_attachment_id
+# }
 #############################
 # DRG DMZ Routes
 #############################
 
-module "dmz_to_hub_route" {
-  source = "../../modules/drg-route-rule"
+# module "dmz_to_hub_route" {
+#   source = "../../modules/drg-route-rule"
 
-  drg_route_table_id         = module.dmz_drg_route_table.drg_route_table_id
-  destination                = "172.28.96.0/24"
-  next_hop_drg_attachment_id = module.hub_drg_attachment.drg_attachment_id
-}
+#   drg_route_table_id         = module.dmz_drg_route_table.drg_route_table_id
+#   destination                = "172.28.96.0/24"
+#   next_hop_drg_attachment_id = module.hub_drg_attachment.drg_attachment_id
+# }
 
 ##############################
 # NSG
@@ -421,25 +421,29 @@ module "db_nsg" {
 #################################
 # Spoke Test VM
 #################################
-module "spoke_test_vm" {
-  source = "../../modules/compute"
-
+resource "oci_core_instance" "this" {
   availability_domain = var.availability_domain
   compartment_id      = var.compartment_id
+  shape               = var.shape
+  display_name        = var.display_name
 
-  display_name = "spoke-test-vm"
+  create_vnic_details {
+    subnet_id        = var.subnet_id
+    assign_public_ip = false
+    nsg_ids          = var.nsg_ids
+  }
 
-  shape = "VM.Standard.E2.1.Micro"
+  source_details {
+    source_type = "image"
+    source_id   = var.image_id
+  }
 
-  subnet_id = module.spoke_app_subnet.subnet_id
+  shape_config {
+    ocpus         = 1
+    memory_in_gbs = 6
+  }
 
-  assign_public_ip = false
-
-  image_id = var.image_id
-
-  ssh_public_key = file("${path.module}/id_rsa.pub")
-
-  nsg_ids = [
-    module.app_nsg.nsg_id
-  ]
+  metadata = {
+    ssh_authorized_keys = var.ssh_public_key
+  }
 }

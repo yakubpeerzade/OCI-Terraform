@@ -77,10 +77,18 @@ output "spoke_route_table_id" {
   value = module.spoke_route_table.route_table_id
 }
 
-output "nsg_id" {
-  value = oci_core_network_security_group.this.id
+output "app_nsg_id" {
+  value = module.app_nsg.nsg_id
 }
 
-output "instance_id" {
-  value = oci_core_instance.this.id
+output "web_nsg_id" {
+  value = module.web_nsg.nsg_id
+}
+
+output "db_nsg_id" {
+  value = module.db_nsg.nsg_id
+}
+
+output "spoke_test_vm_id" {
+  value = module.spoke_test_vm.instance_id
 }
