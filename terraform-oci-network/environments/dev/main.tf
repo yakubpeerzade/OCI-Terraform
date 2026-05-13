@@ -321,6 +321,7 @@ module "dmz_drg_rt_assoc" {
 #############################################################
 # DRG Transit Routes (Force Spoke & DMZ traffic through Hub)
 #############################################################
+
 # 1. Route all traffic leaving the Spoke VCN into the Hub VCN Attachment
 module "spoke_to_hub_route" {
   source                     = "../../modules/drg-route-rule"
@@ -372,6 +373,9 @@ module "db_nsg" {
 #################################
 # Spoke Test VM
 #################################
+#################################
+# Spoke Test VM (Direct Resource)
+#################################
 resource "oci_core_instance" "spoke_test_vm" {
   availability_domain = var.availability_domain
   compartment_id      = var.compartment_id
@@ -379,9 +383,9 @@ resource "oci_core_instance" "spoke_test_vm" {
   display_name        = "spoke-dev-test-vm"
 
   create_vnic_details {
-    subnet_id        = module.spoke_app_subnet.subnet_id
-    assign_public_ip = false
-    nsg_ids          = [module.app_nsg.nsg_id]
+    # Removed assign_public_ip entirely to prevent API Type Mismatch / 400 errors
+    subnet_id = module.spoke_app_subnet.subnet_id
+    nsg_ids   = [module.app_nsg.nsg_id]
   }
 
   source_details {
