@@ -63,31 +63,7 @@ module "hub_management_subnet" {
   route_table_id = module.hub_route_table.route_table_id
 }
 
-module "hub_firewall_subnet" {
-  source = "../../modules/subnet"
 
-  compartment_id = var.compartment_id
-  vcn_id         = module.hub_vcn.vcn_id
-
-  subnet_name    = "hub-firewall-subnet"
-  cidr_block     = "172.28.96.0/28"
-  dns_label      = "hubfw"
-  is_private     = true
-  route_table_id = module.hub_route_table.route_table_id
-}
-
-module "hub_shared_services_subnet" {
-  source = "../../modules/subnet"
-
-  compartment_id = var.compartment_id
-  vcn_id         = module.hub_vcn.vcn_id
-
-  subnet_name    = "hub-shared-services-subnet"
-  cidr_block     = "172.28.96.32/27"
-  dns_label      = "hubshared"
-  is_private     = true
-  route_table_id = module.hub_route_table.route_table_id
-}
 
 #############################
 # DMZ VCN SUBNETS
@@ -105,18 +81,6 @@ module "dmz_public_lb_subnet" {
   route_table_id = module.dmz_route_table.route_table_id
 }
 
-module "dmz_web_subnet" {
-  source = "../../modules/subnet"
-
-  compartment_id = var.compartment_id
-  vcn_id         = module.dmz_vcn.vcn_id
-
-  subnet_name    = "dmz-web-subnet"
-  cidr_block     = "172.28.99.16/28"
-  dns_label      = "dmzweb"
-  is_private     = true
-  route_table_id = module.dmz_route_table.route_table_id
-}
 
 #############################
 # SPOKE VCN SUBNETS
