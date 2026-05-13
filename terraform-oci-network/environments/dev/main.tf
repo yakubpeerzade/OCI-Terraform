@@ -371,19 +371,23 @@ module "db_nsg" {
 }
 
 #################################
-# Spoke Test VM
+# Availability Domains Data Source
 #################################
+data "oci_identity_availability_domains" "ads" {
+  compartment_id = var.compartment_id
+}
+
 #################################
 # Spoke Test VM (Direct Resource)
 #################################
 resource "oci_core_instance" "spoke_test_vm" {
-  availability_domain = var.availability_domain
+  # Dynamically assign the first valid Availability Domain name for your tenancy
+  availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
   compartment_id      = var.compartment_id
   shape               = var.shape
   display_name        = "spoke-dev-test-vm"
 
   create_vnic_details {
-    # Removed assign_public_ip entirely to prevent API Type Mismatch / 400 errors
     subnet_id = module.spoke_app_subnet.subnet_id
     nsg_ids   = [module.app_nsg.nsg_id]
   }
