@@ -92,3 +92,7 @@ output "db_nsg_id" {
 output "spoke_test_vm_instance_id" {
   value = module.spoke_test_vm.instance_id
 }
+
+output "spoke_test_vm_instance_id" {
+  value = oci_core_instance.spoke_test_vm.id
+}

@@ -1,7 +1,6 @@
 #############################
 # DRG
 #############################
-
 module "dev_drg" {
   source = "../../modules/drg"
 
@@ -12,7 +11,6 @@ module "dev_drg" {
 #############################
 # HUB VCN
 #############################
-
 module "hub_vcn" {
   source = "../../modules/vcn"
 
@@ -26,7 +24,6 @@ module "hub_vcn" {
 #############################
 # DMZ VCN
 #############################
-
 module "dmz_vcn" {
   source = "../../modules/vcn"
 
@@ -40,7 +37,6 @@ module "dmz_vcn" {
 #############################
 # SPOKE VCN
 #############################
-
 module "spoke_vcn" {
   source = "../../modules/vcn"
 
@@ -51,24 +47,19 @@ module "spoke_vcn" {
   dns_label   = "spokedev"
 }
 
-
-
 #############################
 # HUB VCN SUBNETS
 #############################
-
 module "hub_management_subnet" {
   source = "../../modules/subnet"
 
   compartment_id = var.compartment_id
   vcn_id         = module.hub_vcn.vcn_id
 
-  subnet_name = "hub-management-subnet"
-  cidr_block  = "172.28.96.16/28"
-  dns_label   = "hubmgmt"
-
-  is_private = true
-
+  subnet_name    = "hub-management-subnet"
+  cidr_block     = "172.28.96.16/28"
+  dns_label      = "hubmgmt"
+  is_private     = true
   route_table_id = module.hub_route_table.route_table_id
 }
 
@@ -78,12 +69,10 @@ module "hub_firewall_subnet" {
   compartment_id = var.compartment_id
   vcn_id         = module.hub_vcn.vcn_id
 
-  subnet_name = "hub-firewall-subnet"
-  cidr_block  = "172.28.96.0/28"
-  dns_label   = "hubfw"
-
-  is_private = true
-
+  subnet_name    = "hub-firewall-subnet"
+  cidr_block     = "172.28.96.0/28"
+  dns_label      = "hubfw"
+  is_private     = true
   route_table_id = module.hub_route_table.route_table_id
 }
 
@@ -93,31 +82,26 @@ module "hub_shared_services_subnet" {
   compartment_id = var.compartment_id
   vcn_id         = module.hub_vcn.vcn_id
 
-  subnet_name = "hub-shared-services-subnet"
-  cidr_block  = "172.28.96.32/27"
-  dns_label   = "hubshared"
-
-  is_private = true
-
+  subnet_name    = "hub-shared-services-subnet"
+  cidr_block     = "172.28.96.32/27"
+  dns_label      = "hubshared"
+  is_private     = true
   route_table_id = module.hub_route_table.route_table_id
 }
 
 #############################
 # DMZ VCN SUBNETS
 #############################
-
 module "dmz_public_lb_subnet" {
   source = "../../modules/subnet"
 
   compartment_id = var.compartment_id
   vcn_id         = module.dmz_vcn.vcn_id
 
-  subnet_name = "dmz-public-lb-subnet"
-  cidr_block  = "172.28.99.0/28"
-  dns_label   = "dmzpub"
-
-  is_private = false
-
+  subnet_name    = "dmz-public-lb-subnet"
+  cidr_block     = "172.28.99.0/28"
+  dns_label      = "dmzpub"
+  is_private     = false
   route_table_id = module.dmz_route_table.route_table_id
 }
 
@@ -127,31 +111,26 @@ module "dmz_web_subnet" {
   compartment_id = var.compartment_id
   vcn_id         = module.dmz_vcn.vcn_id
 
-  subnet_name = "dmz-web-subnet"
-  cidr_block  = "172.28.99.16/28"
-  dns_label   = "dmzweb"
-
-  is_private = true
-
+  subnet_name    = "dmz-web-subnet"
+  cidr_block     = "172.28.99.16/28"
+  dns_label      = "dmzweb"
+  is_private     = true
   route_table_id = module.dmz_route_table.route_table_id
 }
 
 #############################
 # SPOKE VCN SUBNETS
 #############################
-
 module "spoke_app_subnet" {
   source = "../../modules/subnet"
 
   compartment_id = var.compartment_id
   vcn_id         = module.spoke_vcn.vcn_id
 
-  subnet_name = "spoke-app-subnet"
-  cidr_block  = "172.28.98.0/28"
-  dns_label   = "spkapp"
-
-  is_private = true
-
+  subnet_name    = "spoke-app-subnet"
+  cidr_block     = "172.28.98.0/28"
+  dns_label      = "spkapp"
+  is_private     = true
   route_table_id = module.spoke_route_table.route_table_id
 }
 
@@ -161,155 +140,136 @@ module "spoke_db_subnet" {
   compartment_id = var.compartment_id
   vcn_id         = module.spoke_vcn.vcn_id
 
-  subnet_name = "spoke-db-subnet"
-  cidr_block  = "172.28.98.16/28"
-  dns_label   = "spkdb"
-
-  is_private = true
-
+  subnet_name    = "spoke-db-subnet"
+  cidr_block     = "172.28.98.16/28"
+  dns_label      = "spkdb"
+  is_private     = true
   route_table_id = module.spoke_route_table.route_table_id
 }
 
-
 #############################
-# INTERNET GATEWAY
+# GATEWAYS
 #############################
-
 module "dmz_igw" {
-  source = "../../modules/gateway"
-
+  source         = "../../modules/gateway"
   compartment_id = var.compartment_id
-
-  vcn_id = module.dmz_vcn.vcn_id
-
-  gateway_name = "dmz-dev-igw"
-
-  gateway_type = "igw"
+  vcn_id         = module.dmz_vcn.vcn_id
+  gateway_name   = "dmz-dev-igw"
+  gateway_type   = "igw"
 }
-
-#############################
-# NAT GATEWAY
-#############################
 
 module "hub_nat_gateway" {
-  source = "../../modules/gateway"
-
+  source         = "../../modules/gateway"
   compartment_id = var.compartment_id
-
-  vcn_id = module.hub_vcn.vcn_id
-
-  gateway_name = "hub-dev-nat"
-
-  gateway_type = "nat"
+  vcn_id         = module.hub_vcn.vcn_id
+  gateway_name   = "hub-dev-nat"
+  gateway_type   = "nat"
 }
-
-
-#############################
-# SERVICE GATEWAY
-#############################
 
 module "hub_service_gateway" {
-  source = "../../modules/gateway"
-
+  source         = "../../modules/gateway"
   compartment_id = var.compartment_id
-
-  vcn_id = module.hub_vcn.vcn_id
-
-  gateway_name = "hub-dev-sgw"
-
-  gateway_type = "sgw"
+  vcn_id         = module.hub_vcn.vcn_id
+  gateway_name   = "hub-dev-sgw"
+  gateway_type   = "sgw"
 }
 
 #############################
-# Hub-DRG Attachment
+# DRG Attachments
 #############################
-
 module "hub_drg_attachment" {
-  source = "../../modules/drg-attachment"
-
+  source       = "../../modules/drg-attachment"
   drg_id       = module.dev_drg.drg_id
   vcn_id       = module.hub_vcn.vcn_id
   display_name = "hub-drg-attachment"
 }
 
-#############################
-# DMZ-DRG Attachment
-#############################
 module "dmz_drg_attachment" {
-  source = "../../modules/drg-attachment"
-
+  source       = "../../modules/drg-attachment"
   drg_id       = module.dev_drg.drg_id
   vcn_id       = module.dmz_vcn.vcn_id
   display_name = "dmz-drg-attachment"
 }
 
-#############################
-# Spoke-DRG Attachment
-#############################
 module "spoke_drg_attachment" {
-  source = "../../modules/drg-attachment"
-
+  source       = "../../modules/drg-attachment"
   drg_id       = module.dev_drg.drg_id
   vcn_id       = module.spoke_vcn.vcn_id
   display_name = "spoke-drg-attachment"
 }
 
-
 #############################
-# HUb Route Table
+# VCN Route Tables
 #############################
 module "hub_route_table" {
-  source = "../../modules/route-table"
-
+  source         = "../../modules/route-table"
   compartment_id = var.compartment_id
   vcn_id         = module.hub_vcn.vcn_id
-
-  display_name = "hub-route-table"
+  display_name   = "hub-route-table"
 
   route_rules = [
     {
       destination       = "0.0.0.0/0"
       destination_type  = "CIDR_BLOCK"
       network_entity_id = module.hub_nat_gateway.gateway_id
+    },
+    {
+      destination       = "172.28.99.0/24" # Route to DMZ via DRG
+      destination_type  = "CIDR_BLOCK"
+      network_entity_id = module.dev_drg.drg_id
+    },
+    {
+      destination       = "172.28.98.0/26" # Route to Spoke via DRG
+      destination_type  = "CIDR_BLOCK"
+      network_entity_id = module.dev_drg.drg_id
+    },
+    {
+      destination       = "10.100.1.0/24" # Route to AWS via DRG
+      destination_type  = "CIDR_BLOCK"
+      network_entity_id = module.dev_drg.drg_id
     }
   ]
 }
 
-
-#############################
-# DMZ Route Table
-#############################
 module "dmz_route_table" {
-  source = "../../modules/route-table"
-
+  source         = "../../modules/route-table"
   compartment_id = var.compartment_id
   vcn_id         = module.dmz_vcn.vcn_id
-
-  display_name = "dmz-route-table"
+  display_name   = "dmz-route-table"
 
   route_rules = [
     {
       destination       = "0.0.0.0/0"
       destination_type  = "CIDR_BLOCK"
       network_entity_id = module.dmz_igw.gateway_id
+    },
+    {
+      destination       = "172.28.96.0/24" # Route to Hub via DRG
+      destination_type  = "CIDR_BLOCK"
+      network_entity_id = module.dev_drg.drg_id
+    },
+    {
+      destination       = "172.28.98.0/26" # Route to Spoke via DRG
+      destination_type  = "CIDR_BLOCK"
+      network_entity_id = module.dev_drg.drg_id
+    },
+    {
+      destination       = "10.100.1.0/24" # Route to AWS via DRG
+      destination_type  = "CIDR_BLOCK"
+      network_entity_id = module.dev_drg.drg_id
     }
   ]
 }
 
-#############################
-# Spoke Route Table
-#############################
 module "spoke_route_table" {
-  source = "../../modules/route-table"
-
+  source         = "../../modules/route-table"
   compartment_id = var.compartment_id
   vcn_id         = module.spoke_vcn.vcn_id
-
-  display_name = "spoke-route-table"
+  display_name   = "spoke-route-table"
 
   route_rules = [
     {
-      destination       = "0.0.0.0/0"
+      destination       = "0.0.0.0/0" # Send all non-local traffic to DRG
       destination_type  = "CIDR_BLOCK"
       network_entity_id = module.dev_drg.drg_id
     }
@@ -317,125 +277,116 @@ module "spoke_route_table" {
 }
 
 #############################
-# DRG Route Table
+# DRG Route Tables
 #############################
-
 module "hub_drg_route_table" {
-  source = "../../modules/drg-route-table"
-
+  source       = "../../modules/drg-route-table"
   drg_id       = module.dev_drg.drg_id
   display_name = "hub-drg-route-table"
 }
 
 module "spoke_drg_route_table" {
-  source = "../../modules/drg-route-table"
-
+  source       = "../../modules/drg-route-table"
   drg_id       = module.dev_drg.drg_id
   display_name = "spoke-drg-route-table"
 }
 
 module "dmz_drg_route_table" {
-  source = "../../modules/drg-route-table"
-
+  source       = "../../modules/drg-route-table"
   drg_id       = module.dev_drg.drg_id
   display_name = "dmz-drg-route-table"
 }
 
 #############################
-# DRG Hub Routes
+# DRG Route Table Associations
 #############################
-
-
 module "hub_drg_rt_assoc" {
-  source = "../../modules/drg-route-table-association"
-
+  source             = "../../modules/drg-route-table-association"
   drg_attachment_id  = module.hub_drg_attachment.drg_attachment_id
   drg_route_table_id = module.hub_drg_route_table.drg_route_table_id
 }
 
 module "spoke_drg_rt_assoc" {
-  source = "../../modules/drg-route-table-association"
-
+  source             = "../../modules/drg-route-table-association"
   drg_attachment_id  = module.spoke_drg_attachment.drg_attachment_id
   drg_route_table_id = module.spoke_drg_route_table.drg_route_table_id
 }
 
 module "dmz_drg_rt_assoc" {
-  source = "../../modules/drg-route-table-association"
-
+  source             = "../../modules/drg-route-table-association"
   drg_attachment_id  = module.dmz_drg_attachment.drg_attachment_id
   drg_route_table_id = module.dmz_drg_route_table.drg_route_table_id
 }
 
-#############################
-# DRG Spoke Routes
-#############################
-# module "spoke_to_hub_route" {
-#   source = "../../modules/drg-route-rule"
+#############################################################
+# DRG Transit Routes (Force Spoke & DMZ traffic through Hub)
+#############################################################
+# 1. Route all traffic leaving the Spoke VCN into the Hub VCN Attachment
+module "spoke_to_hub_route" {
+  source                     = "../../modules/drg-route-rule"
+  drg_route_table_id         = module.spoke_drg_route_table.drg_route_table_id
+  destination                = "0.0.0.0/0"
+  next_hop_drg_attachment_id = module.hub_drg_attachment.drg_attachment_id
+}
 
-#   drg_route_table_id         = module.spoke_drg_route_table.drg_route_table_id
-#   destination                = "172.28.96.0/24"
-#   next_hop_drg_attachment_id = module.hub_drg_attachment.drg_attachment_id
-# }
-#############################
-# DRG DMZ Routes
-#############################
+# 2. Route traffic leaving the DMZ VCN destined for Hub into Hub VCN Attachment
+module "dmz_to_hub_route" {
+  source                     = "../../modules/drg-route-rule"
+  drg_route_table_id         = module.dmz_drg_route_table.drg_route_table_id
+  destination                = "172.28.96.0/24"
+  next_hop_drg_attachment_id = module.hub_drg_attachment.drg_attachment_id
+}
 
-# module "dmz_to_hub_route" {
-#   source = "../../modules/drg-route-rule"
-
-#   drg_route_table_id         = module.dmz_drg_route_table.drg_route_table_id
-#   destination                = "172.28.96.0/24"
-#   next_hop_drg_attachment_id = module.hub_drg_attachment.drg_attachment_id
-# }
+# 3. Route traffic leaving the DMZ VCN destined for Spoke into Hub VCN Attachment (Inspection)
+module "dmz_to_spoke_route" {
+  source                     = "../../modules/drg-route-rule"
+  drg_route_table_id         = module.dmz_drg_route_table.drg_route_table_id
+  destination                = "172.28.98.0/26"
+  next_hop_drg_attachment_id = module.hub_drg_attachment.drg_attachment_id
+}
 
 ##############################
-# NSG
+# NSGs
 ##############################
 module "web_nsg" {
-  source = "../../modules/nsg"
-
+  source         = "../../modules/nsg"
   compartment_id = var.compartment_id
   vcn_id         = module.dmz_vcn.vcn_id
   display_name   = "web-nsg"
 }
 
 module "app_nsg" {
-  source = "../../modules/nsg"
-
+  source         = "../../modules/nsg"
   compartment_id = var.compartment_id
   vcn_id         = module.spoke_vcn.vcn_id
   display_name   = "app-nsg"
 }
 
 module "db_nsg" {
-  source = "../../modules/nsg"
-
+  source         = "../../modules/nsg"
   compartment_id = var.compartment_id
   vcn_id         = module.spoke_vcn.vcn_id
   display_name   = "db-nsg"
 }
 
-
-
 #################################
 # Spoke Test VM
 #################################
-resource "oci_core_instance" "this" {
+resource "oci_core_instance" "spoke_test_vm" {
   availability_domain = var.availability_domain
   compartment_id      = var.compartment_id
   shape               = var.shape
-  display_name        = var.display_name
+  display_name        = "spoke-dev-test-vm"
 
   create_vnic_details {
-    subnet_id        = var.subnet_id
+    subnet_id        = module.spoke_app_subnet.subnet_id
     assign_public_ip = false
-    nsg_ids          = var.nsg_ids
+    nsg_ids          = [module.app_nsg.nsg_id]
   }
 
   source_details {
     source_type = "image"
-    source_id   = var.image_id
+    source_id   = var.oracle_linux_image_id
   }
 
   shape_config {
