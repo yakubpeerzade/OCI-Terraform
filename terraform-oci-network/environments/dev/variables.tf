@@ -2,13 +2,14 @@ variable "region" {
   type = string
 }
 
-#####VM############
-variable "availability_domain" {
+variable "compartment_id" {
   type = string
 }
 
-variable "compartment_id" {
-  type = string
+# Explicitly declares the shared DRG ID variable expected by main.tf
+variable "drg_id" {
+  type        = string
+  description = "The OCID of the shared DRG created in the common environment"
 }
 
 variable "oracle_linux_image_id" {
@@ -26,6 +27,3 @@ variable "ssh_public_key" {
   type        = string
   description = "Public SSH key for VM access"
 }
-
-
-
