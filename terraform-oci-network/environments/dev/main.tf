@@ -168,11 +168,16 @@ module "spoke_drg_attachment" {
 #############################
 # VCN Route Tables
 #############################
+#############################
+# HUB Route Table
+#############################
 module "hub_route_table" {
-  source         = "../../modules/route-table"
+  source = "../../modules/route-table"
+
   compartment_id = var.compartment_id
   vcn_id         = module.hub_vcn.vcn_id
-  display_name   = "hub-route-table"
+
+  display_name = "hub-route-table"
 
   route_rules = [
     {
@@ -181,28 +186,33 @@ module "hub_route_table" {
       network_entity_id = module.hub_nat_gateway.gateway_id
     },
     {
-      destination       = "172.28.99.0/24" # Route to DMZ via DRG
+      destination       = "172.28.99.0/24"
       destination_type  = "CIDR_BLOCK"
-      network_entity_id = module.dev_drg.drg_id
+      network_entity_id = var.drg_id # FIXED Reference
     },
     {
-      destination       = "172.28.98.0/26" # Route to Spoke via DRG
+      destination       = "172.28.98.0/26"
       destination_type  = "CIDR_BLOCK"
-      network_entity_id = module.dev_drg.drg_id
+      network_entity_id = var.drg_id # FIXED Reference
     },
     {
-      destination       = "10.100.1.0/24" # Route to AWS via DRG
+      destination       = "10.100.1.0/24"
       destination_type  = "CIDR_BLOCK"
-      network_entity_id = module.dev_drg.drg_id
+      network_entity_id = var.drg_id # FIXED Reference
     }
   ]
 }
 
+#############################
+# DMZ Route Table
+#############################
 module "dmz_route_table" {
-  source         = "../../modules/route-table"
+  source = "../../modules/route-table"
+
   compartment_id = var.compartment_id
   vcn_id         = module.dmz_vcn.vcn_id
-  display_name   = "dmz-route-table"
+
+  display_name = "dmz-route-table"
 
   route_rules = [
     {
@@ -211,19 +221,19 @@ module "dmz_route_table" {
       network_entity_id = module.dmz_igw.gateway_id
     },
     {
-      destination       = "172.28.96.0/24" # Route to Hub via DRG
+      destination       = "172.28.96.0/24"
       destination_type  = "CIDR_BLOCK"
-      network_entity_id = module.dev_drg.drg_id
+      network_entity_id = var.drg_id # FIXED Reference
     },
     {
-      destination       = "172.28.98.0/26" # Route to Spoke via DRG
+      destination       = "172.28.98.0/26"
       destination_type  = "CIDR_BLOCK"
-      network_entity_id = module.dev_drg.drg_id
+      network_entity_id = var.drg_id # FIXED Reference
     },
     {
-      destination       = "10.100.1.0/24" # Route to AWS via DRG
+      destination       = "10.100.1.0/24"
       destination_type  = "CIDR_BLOCK"
-      network_entity_id = module.dev_drg.drg_id
+      network_entity_id = var.drg_id # FIXED Reference
     }
   ]
 }
