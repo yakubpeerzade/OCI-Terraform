@@ -1,12 +1,12 @@
 #############################
 # DRG
 #############################
-module "dev_drg" {
-  source = "../../modules/drg"
+# module "dev_drg" {
+#   source = "../../modules/drg"
 
-  compartment_id = var.compartment_id
-  display_name   = "dev-drg"
-}
+#   compartment_id = var.compartment_id
+#   display_name   = "dev-drg"
+# }
 
 #############################
 # HUB VCN
@@ -142,24 +142,27 @@ module "hub_service_gateway" {
 # DRG Attachments
 #############################
 module "hub_drg_attachment" {
-  source       = "../../modules/drg-attachment"
-  drg_id       = module.dev_drg.drg_id
+  source = "../../modules/drg-attachment"
+
+  drg_id       = var.drg_id # Updated reference
   vcn_id       = module.hub_vcn.vcn_id
-  display_name = "hub-drg-attachment"
+  display_name = "hub-dev-drg-attachment"
 }
 
 module "dmz_drg_attachment" {
-  source       = "../../modules/drg-attachment"
-  drg_id       = module.dev_drg.drg_id
+  source = "../../modules/drg-attachment"
+
+  drg_id       = var.drg_id # Updated reference
   vcn_id       = module.dmz_vcn.vcn_id
-  display_name = "dmz-drg-attachment"
+  display_name = "dmz-dev-drg-attachment"
 }
 
 module "spoke_drg_attachment" {
-  source       = "../../modules/drg-attachment"
-  drg_id       = module.dev_drg.drg_id
+  source = "../../modules/drg-attachment"
+
+  drg_id       = var.drg_id # Updated reference
   vcn_id       = module.spoke_vcn.vcn_id
-  display_name = "spoke-drg-attachment"
+  display_name = "spoke-dev-drg-attachment"
 }
 
 #############################
@@ -226,16 +229,17 @@ module "dmz_route_table" {
 }
 
 module "spoke_route_table" {
-  source         = "../../modules/route-table"
+  source = "../../modules/route-table"
+
   compartment_id = var.compartment_id
   vcn_id         = module.spoke_vcn.vcn_id
   display_name   = "spoke-route-table"
 
   route_rules = [
     {
-      destination       = "0.0.0.0/0" # Send all non-local traffic to DRG
+      destination       = "0.0.0.0/0"
       destination_type  = "CIDR_BLOCK"
-      network_entity_id = module.dev_drg.drg_id
+      network_entity_id = var.drg_id # Updated reference
     }
   ]
 }
@@ -244,21 +248,24 @@ module "spoke_route_table" {
 # DRG Route Tables
 #############################
 module "hub_drg_route_table" {
-  source       = "../../modules/drg-route-table"
-  drg_id       = module.dev_drg.drg_id
-  display_name = "hub-drg-route-table"
+  source = "../../modules/drg-route-table"
+
+  drg_id       = var.drg_id # Updated reference
+  display_name = "hub-dev-drg-route-table"
 }
 
 module "spoke_drg_route_table" {
-  source       = "../../modules/drg-route-table"
-  drg_id       = module.dev_drg.drg_id
-  display_name = "spoke-drg-route-table"
+  source = "../../modules/drg-route-table"
+
+  drg_id       = var.drg_id # Updated reference
+  display_name = "spoke-dev-drg-route-table"
 }
 
 module "dmz_drg_route_table" {
-  source       = "../../modules/drg-route-table"
-  drg_id       = module.dev_drg.drg_id
-  display_name = "dmz-drg-route-table"
+  source = "../../modules/drg-route-table"
+
+  drg_id       = var.drg_id # Updated reference
+  display_name = "dmz-dev-drg-route-table"
 }
 
 #############################
