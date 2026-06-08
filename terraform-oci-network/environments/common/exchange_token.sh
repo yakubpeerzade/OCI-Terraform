@@ -21,7 +21,7 @@ echo "$ACCESS_TOKEN" > "$SCRIPT_DIR/token.txt"
 # Generate a dummy signing key to bypass structural client validation rules
 openssl genrsa -out "$SCRIPT_DIR/key.pem" 2048 2>/dev/null
 
-# Overwrite the placeholder oci_config file with the exact runner paths
+# Overwrite the local placeholder oci_config file with the exact runner paths
 cat << EOF > "$SCRIPT_DIR/oci_config"
 [TFC_PROFILE]
 tenancy=ocid1.tenancy.oc1..aaaaaaaa7kh4d2jrtkr6pvmhsm5ezqijhvesirmdmf6eb4c23u27dphz2lca
