@@ -5,7 +5,7 @@ data "external" "oci_token" {
 
 # 2. Configure the OCI provider to use the generated token
 provider "oci" {
-  auth   = "SecurityToken"
-  token  = data.external.oci_token.result["access_token"] # CHANGED HERE
-  region = var.region 
+  auth        = "SecurityToken"
+  token_value = data.external.oci_token.result["access_token"] # UPDATED HERE
+  region      = var.region 
 }
